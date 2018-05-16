@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+# You can add your startup command here
+#
+
+mount -t vboxsf -o uid=1000,gid=1000 data /mnt/data
+
+# End of file

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+PATH=/bin:/usr/bin
+MSG="System is reboot in 5 seconds..."
+
+touch /etc/runit/stopit
+chmod 100 /etc/runit/stopit && echo "$MSG" | wall
+sleep 5
