@@ -1,0 +1,2 @@
+# nyx-runit
+runit bootscripts
