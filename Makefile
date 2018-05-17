@@ -1,32 +1,35 @@
-SCRIPTS=	1 2 3 ctrlaltdel
+DESTDIR=
+CC=		gcc
+SCRIPTS=	1 2 3 ctrlaltdel rc.local rc.shutdown
+BINARY=		halt pause shutdown
+CONF=		modules runit.conf
+MAN1=		pause.1
+MAN8=		shutdown.8
 
 all:
-	$(CC) $(CFLAGS) pause.c -o pause $(LDFLAGS)
+	$(CC) $(CFLAGS) pause.c -o pause
 
 install:
-	install -d ${DESTDIR}/{sbin,usr/bin}
-	install -m755 halt ${DESTDIR}/sbin
-	install -m755 pause ${DESTDIR}/usr/bin
-	install -m755 shutdown ${DESTDIR}/sbin
-	ln -sf halt ${DESTDIR}/sbin/poweroff
-	ln -sf halt ${DESTDIR}/sbin/reboot
-	install -d ${DESTDIR}/usr/share/man/man1
-	install -m644 pause.1 ${DESTDIR}/usr/share/man/man1
-	install -d ${DESTDIR}/usr/share/man/man8
-	install -m644 shutdown.8 ${DESTDIR}/usr/share/man/man8
-	install -d ${DESTDIR}/etc/sv
-	install -d ${DESTDIR}/etc/runit/runsvdir
-	install -m755 ${SCRIPTS} ${DESTDIR}/etc/runit
-	install -m644 runit.conf ${DESTDIR}/etc/runit
-	install -m644 modules ${DESTDIR}/etc/runit
-	install -m755 rc.local ${DESTDIR}/etc/runit
-	install -m755 rc.shutdown ${DESTDIR}/etc/runit
-	touch ${DESTDIR}/etc/runit/stopit
-	touch ${DESTDIR}/etc/runit/reboot
-	cp -R --no-dereference --preserve=mode,links -v runsvdir/* ${DESTDIR}/etc/runit/runsvdir/
-	cp -R --no-dereference --preserve=mode,links -v services/* ${DESTDIR}/etc/sv/
+	install -d $(DESTDIR)/sbin
+	install -m755 $(BINARY) $(DESTDIR)/sbin
+	install -d $(DESTDIR)/etc/runit
+	install -m755 $(SCRIPTS) $(DESTDIR)/etc/runit
+	install -m644 $(CONF) $(DESTDIR)/etc/runit
+	install -d $(DESTDIR)/usr/share/man/man1
+	install -m644 $(MAN1) $(DESTDIR)/usr/share/man/man1
+	install -d $(DESTDIR)/usr/share/man/man8
+	install -m644 $(MAN8) $(DESTDIR)/usr/share/man/man8
+	install -d $(DESTDIR)/etc/sv
+	cp -r services/* $(DESTDIR)/etc/sv
+	chmod 755 $(DESTDIR)/etc/sv/*/{run,finish}
+	install -d $(DESTDIR)/etc/runit/runsvdir/default
+	ln -s default $(DESTDIR)/etc/runit/runsvdir/current
+	install -d $(DESTDIR)/var
+	ln -s /etc/runit/runsvdir/current $(DESTDIR)/var/service
+	touch $(DESTDIR)/etc/runit/{reboot,stopit}
+	chmod 0 $(DESTDIR)/etc/runit/{reboot,stopit}
 
 clean:
-	-rm -f pause
+	rm -f pause
 
 .PHONY: all install clean

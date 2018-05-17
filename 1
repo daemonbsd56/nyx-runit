@@ -57,12 +57,12 @@ msg "Set hostname to '$HOSTNAME'..."
 hostname $HOSTNAME
 
 msg "Populating /dev with device nodes... "
-/sbin/udevd --daemon
-/sbin/udevadm trigger --action=add    --type=subsystems
-/sbin/udevadm trigger --action=add    --type=devices
-/sbin/udevadm trigger --action=change --type=devices
-/sbin/udevadm settle
-if [ -x /sbin/vgchange ]; then /sbin/vgchange -a y >/dev/null; fi
+udevd --daemon
+udevadm trigger --action=add    --type=subsystems
+udevadm trigger --action=add    --type=devices
+udevadm trigger --action=change --type=devices
+udevadm settle
+if [ -x vgchange ]; then vgchange -a y >/dev/null; fi
 
 msg "Activating all swap files/partitions..."
 swapon -a
