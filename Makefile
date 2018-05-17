@@ -4,6 +4,7 @@ BINARY=		halt pause shutdown
 CONF=		modules runit.conf
 MAN1=		pause.1
 MAN8=		shutdown.8
+OSNAME=		GNU/Linux
 
 all:
 	$(CC) $(CFLAGS) pause.c -o pause
@@ -11,10 +12,11 @@ all:
 install:
 	install -d $(DESTDIR)/sbin
 	install -m755 $(BINARY) $(DESTDIR)/sbin
-	ln -s halt $(DESTDIR)/sbin/reboot
-	ln -s halt $(DESTDIR)/sbin/poweroff
+	ln -sf halt $(DESTDIR)/sbin/reboot
+	ln -sf halt $(DESTDIR)/sbin/poweroff
 	install -d $(DESTDIR)/etc/runit
 	install -m755 $(SCRIPTS) $(DESTDIR)/etc/runit
+	sed -i 's:GNU/Linux:$(OSNAME):' $(DESTDIR)/etc/runit/1
 	install -m644 $(CONF) $(DESTDIR)/etc/runit
 	install -d $(DESTDIR)/usr/share/man/man1
 	install -m644 $(MAN1) $(DESTDIR)/usr/share/man/man1
@@ -23,13 +25,13 @@ install:
 	install -d $(DESTDIR)/etc/sv
 	cp -r services/* $(DESTDIR)/etc/sv
 	chmod 755 $(DESTDIR)/etc/sv/*/{run,finish}
-	install -d $(DESTDIR)/etc/runit/runsvdir/default
-	ln -sv default $(DESTDIR)/etc/runit/runsvdir/current
+	install -d $(DESTDIR)/etc/runit/runsvdir/{default,single}
+	[ -L $(DESTDIR)/etc/runit/runsvdir/current ] || ln -s default $(DESTDIR)/etc/runit/runsvdir/current
 	install -d $(DESTDIR)/var
-	ln -sv /etc/runit/runsvdir/current $(DESTDIR)/var/service
+	[ -L $(DESTDIR)/var/service ] || ln -s /etc/runit/runsvdir/current $(DESTDIR)/var/service
 	touch $(DESTDIR)/etc/runit/{reboot,stopit}
 	chmod 0 $(DESTDIR)/etc/runit/{reboot,stopit}
-	ln -sv /etc/sv/getty-tty1 $(DESTDIR)/etc/runit/runsvdir/default
+	ln -sf /etc/sv/getty-tty1 $(DESTDIR)/etc/runit/runsvdir/default
 
 clean:
 	rm -f pause
