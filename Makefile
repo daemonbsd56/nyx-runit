@@ -11,6 +11,8 @@ all:
 install:
 	install -d $(DESTDIR)/sbin
 	install -m755 $(BINARY) $(DESTDIR)/sbin
+	ln -s halt $(DESTDIR)/sbin/reboot
+	ln -s halt $(DESTDIR)/sbin/poweroff
 	install -d $(DESTDIR)/etc/runit
 	install -m755 $(SCRIPTS) $(DESTDIR)/etc/runit
 	install -m644 $(CONF) $(DESTDIR)/etc/runit
