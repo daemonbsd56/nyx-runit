@@ -6,7 +6,7 @@ msg() {
     echo -e "\e[0;32m*\e[0m $@"
 }
 
-[ -x /etc/runit/rc.shutdown ] && /etc/runit/rc.shutdown
+[ -x /etc/runit/shutdown.local ] && /etc/runit/shutdown.local
 
 msg "Saving random seed..."
 dd if=/dev/urandom of=/var/lib/random-seed count=1 bs=512 2>/dev/null
