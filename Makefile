@@ -32,6 +32,7 @@ install:
 	touch $(DESTDIR)/etc/runit/{reboot,stopit}
 	chmod 0 $(DESTDIR)/etc/runit/{reboot,stopit}
 	ln -sf /etc/sv/getty-tty1 $(DESTDIR)/etc/runit/runsvdir/default
+	ln -sf /etc/sv/sulogin $(DESTDIR)/etc/runit/runsvdir/single
 
 clean:
 	rm -f pause
