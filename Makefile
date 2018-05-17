@@ -1,4 +1,3 @@
-DESTDIR=
 CC=		gcc
 SCRIPTS=	1 2 3 ctrlaltdel rc.local rc.shutdown
 BINARY=		halt pause shutdown
@@ -23,11 +22,12 @@ install:
 	cp -r services/* $(DESTDIR)/etc/sv
 	chmod 755 $(DESTDIR)/etc/sv/*/{run,finish}
 	install -d $(DESTDIR)/etc/runit/runsvdir/default
-	ln -s default $(DESTDIR)/etc/runit/runsvdir/current
+	ln -sv default $(DESTDIR)/etc/runit/runsvdir/current
 	install -d $(DESTDIR)/var
-	ln -s /etc/runit/runsvdir/current $(DESTDIR)/var/service
+	ln -sv /etc/runit/runsvdir/current $(DESTDIR)/var/service
 	touch $(DESTDIR)/etc/runit/{reboot,stopit}
 	chmod 0 $(DESTDIR)/etc/runit/{reboot,stopit}
+	ln -sv /etc/sv/getty-tty1 $(DESTDIR)/etc/runit/runsvdir/default
 
 clean:
 	rm -f pause
