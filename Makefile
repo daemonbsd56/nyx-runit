@@ -1,5 +1,5 @@
 CC=		gcc
-SCRIPTS=	1 2 3 ctrlaltdel rc.local rc.shutdown
+SCRIPTS=	1 2 3 ctrlaltdel rc.local rc.shutdown startup shutdown
 BINARY=		halt pause shutdown
 CONF=		modules runit.conf
 MAN1=		pause.1
@@ -16,7 +16,7 @@ install:
 	ln -sf halt $(DESTDIR)/sbin/poweroff
 	install -d $(DESTDIR)/etc/runit
 	install -m755 $(SCRIPTS) $(DESTDIR)/etc/runit
-	sed -i 's:GNU/Linux:$(OSNAME):' $(DESTDIR)/etc/runit/1
+	sed -i 's:GNU/Linux:$(OSNAME):' $(DESTDIR)/etc/runit/startup
 	install -m644 $(CONF) $(DESTDIR)/etc/runit
 	install -d $(DESTDIR)/usr/share/man/man1
 	install -m644 $(MAN1) $(DESTDIR)/usr/share/man/man1
