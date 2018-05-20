@@ -1,6 +1,6 @@
 CC=		gcc
 SCRIPTS=	1 2 3 ctrlaltdel startup.local shutdown.local startup shutdown
-BINARY=		halt pause shutdown
+BINARY=		halt pause shutdown-bin
 CONF=		modules runit.conf
 MAN1=		pause.1
 MAN8=		shutdown.8
