@@ -12,6 +12,7 @@ all:
 install:
 	install -d $(DESTDIR)/sbin
 	install -m755 $(BINARY) $(DESTDIR)/sbin
+	mv $(DESTDIR)/sbin/shutdown-bin $(DESTDIR)/sbin/shutdown
 	ln -sf halt $(DESTDIR)/sbin/reboot
 	ln -sf halt $(DESTDIR)/sbin/poweroff
 	install -d $(DESTDIR)/etc/runit
