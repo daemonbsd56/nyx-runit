@@ -12,7 +12,7 @@ msg "Saving random seed..."
 dd if=/dev/urandom of=/var/lib/random-seed count=1 bs=512 2>/dev/null
 
 msg "Saving system time to hardware clock..."
-hwclock --systohc "$CLOCKPARAMS"
+hwclock --systohc $CLOCKPARAMS
 
 msg "Sending TERM signal to processes..."
 pkill --inverse -s0,1 -TERM
