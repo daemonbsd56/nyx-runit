@@ -17,6 +17,9 @@ MAN1	= pause.1
 MAN8	= shutdown.8
 OSNAME	= GNU/Linux
 
+all:
+	$(CC) $(CFLAGS) pause.c -o pause
+
 create-dir:
 	install -d $(IETCDIR)/runit/runsvdir/{default,single}
 	install -d $(ISVDIR)
@@ -24,9 +27,6 @@ create-dir:
 	install -d $(IMANDIR)/man1
 	install -d $(IMANDIR)/man8
 	install -d $(IVARDIR)
-
-all:
-	$(CC) $(CFLAGS) pause.c -o pause
 
 install: create-dir
 	install -m755 $(BINARY) $(IBINDIR)
@@ -49,4 +49,4 @@ install: create-dir
 clean:
 	rm -f pause
 
-.PHONY: all install clean
+.PHONY: all install clean create-dir
